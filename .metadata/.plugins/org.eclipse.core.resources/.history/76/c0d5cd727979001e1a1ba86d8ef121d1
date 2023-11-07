@@ -1,0 +1,60 @@
+package custReg;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/custRegi")
+public class Custmer_Regi  extends HttpServlet{
+	
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		
+		     PrintWriter out=resp.getWriter();
+		     
+		    String fName=req.getParameter("firstName");
+			String lName=req.getParameter("lastName");
+			String emailid=req.getParameter("emailid");
+		      
+			try{
+				
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "root");
+				
+				PreparedStatement st=con.prepareStatement("insert into customer values(?,?,?)");
+				
+				st.setString(1, fName);
+				st.setString(2, lName);
+				st.setString(3, emailid);
+				
+				int result= st.executeUpdate();
+				
+				if(result>0) {
+					
+					//send welcome mail to customer
+					resp.setContentType("text/html");
+					out.print("<h2>New Customer Registered Successfully</h2>");
+				}
+				
+				else {
+					out.print("<h2>Registration Failed</h2>");
+				}
+				
+				
+			}
+			
+			catch(Exception e) {
+				
+			}
+			out.close();
+	
+	}
+
+}
