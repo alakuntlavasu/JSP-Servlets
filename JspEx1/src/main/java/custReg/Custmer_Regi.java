@@ -45,7 +45,7 @@ public class Custmer_Regi  extends HttpServlet{
 				}
 				
 				else {
-					out.print("<h2>Registration Failed</h2>");
+					out.print("<h2>Registration Failedd</h2>");
 				}
 				
 				
